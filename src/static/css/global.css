@@ -1,0 +1,7 @@
+body {
+    font-family: PingFangSC-Regular, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -webkit-user-select: none;
+    user-select: none;
+    -moz-osx-font-smoothing: grayscale;
+}
