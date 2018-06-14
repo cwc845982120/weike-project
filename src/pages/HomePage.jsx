@@ -11,7 +11,7 @@ class HomePage extends Base {
 	}
 
 	toast() {
-		// TODO
+		this.props.history.push('/subhome');
 	}
 
     render() {

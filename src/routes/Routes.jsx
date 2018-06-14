@@ -3,6 +3,7 @@ import React from 'react'
 import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom'
 
 import HomePage from '../pages/HomePage'
+import SubPage from '../pages/SubPage'
 import NotFound from '../pages/NotFound'
 
 // 如果你的Home，Topics， Jobs是互斥的，那还要加上Switch
@@ -15,6 +16,7 @@ class Routes extends React.Component {
 					{ /** 默认跳转home页 */ }
 					<Route exact path="/" render={() => (<Redirect to="/home"/>)} />
 					<Route path={"/home"} component={ HomePage }/>
+					<Route path={"/subhome"} component={ SubPage }/>
 					<Route component={ NotFound } />
 				</Switch>
             </Router>
