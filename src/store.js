@@ -5,11 +5,15 @@ import { createStore, applyMiddleware } from 'redux';
 // 引入redux日志系统中间件
 import { createLogger } from 'redux-logger';
 
-// 创建一个初始化的state
-const initState = {
-	counter: {
-		count: 0
-	}
-};
+const store = createStore(reducers, applyMiddleware(createLogger()));
 
-export default createStore(reducers, initState, applyMiddleware(createLogger()));
+// 配置store热更新
+if (module.hot) {
+    // Enable Webpack hot module replacement for reducers
+    module.hot.accept('./state', () => {
+      	const nextRootReducer = require('./state/index');
+      	store.replaceReducer(nextRootReducer);
+    });
+}
+
+export default store;
