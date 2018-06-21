@@ -36,7 +36,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
 	return {
-	  	handleClick:() => {
+	  	handleClick: () => {
 			dispatch({
 			  	type: 'increase'
 			})
@@ -51,7 +51,7 @@ const Div = styled.div`
 	font-size: 1em;
 	margin: 1em;
 	padding: 0.25em 1em;
-	border: 2px solid palevioletred;
+	border: 2px solid white;
 	border-radius: 3px;
 	text-align: center;
 	a{

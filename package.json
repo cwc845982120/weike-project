@@ -28,6 +28,8 @@
     "start": "npm run dev"
   },
   "devDependencies": {
+    "eslint-plugin-html": "^4.0.5",
+    "eslint-plugin-jsx": "^0.0.2",
     "react-app-rewired": "^1.5.2"
   }
 }
