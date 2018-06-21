@@ -144,7 +144,7 @@ module.exports = {
             }
         ],
         "quotes": [
-            2, "double"
+            0, "double"
         ],
         "semi": [
             2, "always"

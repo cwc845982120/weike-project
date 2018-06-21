@@ -1,5 +1,7 @@
 import React from 'react'
 import Base from '../config/Base'
+import { getQueryString } from '../common/utils';
+import { wxUtilsInit } from '../common/wxUtils'
 import { connect } from 'react-redux'
 import styled from 'styled-components'
 import { Button, WhiteSpace } from 'antd-mobile'
@@ -12,6 +14,14 @@ class HomePage extends Base {
 
 	toast() {
 		this.props.history.push('/subhome');
+	}
+
+	componentDidMount() {
+		// 用户同意授权，获取code
+		const code = getQueryString('code');
+		console.log(code);
+		// TODO 利用code换取用户数据
+		wxUtilsInit('', '', '');
 	}
 
     render() {

@@ -2,6 +2,7 @@ import React from 'react'
 // BrowserRouter history模式 HashRouter hash模式
 import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom'
 
+import GetWxCode from '../pages/GetWxCode'
 import HomePage from '../pages/HomePage'
 import SubPage from '../pages/SubPage'
 import NotFound from '../pages/NotFound'
@@ -15,6 +16,7 @@ class Routes extends React.Component {
 				<Switch>
 					{ /** 默认跳转home页 */ }
 					<Route exact path="/" render={() => (<Redirect to="/home"/>)} />
+					<Route exact path={"/getwxcode"} component={ GetWxCode }/>
 					<Route path={"/home"} component={ HomePage }/>
 					<Route path={"/subhome"} component={ SubPage }/>
 					<Route component={ NotFound } />
