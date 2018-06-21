@@ -4,10 +4,10 @@ const initialCountState = {
 
 function counter(state = initialCountState, action) {
 	switch (action.type) {
-		case 'increase':
-			return { count: state.count + 1 };
-		default:
-			return state;
+	case 'increase':
+		return { count: state.count + 1 };
+	default:
+		return state;
 	}
 }
 
