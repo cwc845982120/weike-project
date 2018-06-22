@@ -47,6 +47,16 @@ export function wxUtilsInit(timestamp, nonceStr, signature) {
 			'openCard'
 		] // 必填，需要使用的JS接口列表
 	});
+
+	// 初始化
+	wxUtils.ready(() => {
+		console.log(`jssdk初始化完成`);
+	});
+
+	// jssdk初始化异常
+	wxUtils.error((error) => {
+		console.log(error);
+	});
 }
 
 export default wxUtils;
