@@ -13,8 +13,10 @@ class ApplyInfo extends Base {
             userCardCode: '', // 身份证号码
             educationVal: '', // 学历
             marriageVal: '', // 婚姻状况
+            contactOneName: '', // 联系人1姓名
             contactOneTel: '', // 联系人1电话
             relationOne: '', // 联系人1关系
+            contactTwoName: '', // 联系人2姓名
             contactTwoTel: '', // 联系人2电话
             relationTwo: '', // 联系人2关系
             companyName: '', // 单位名称
@@ -154,15 +156,15 @@ class ApplyInfo extends Base {
                         placeholder="请输入"
                         moneyKeyboardAlign="right"
                         className="right_input"
-                        onChange={v => this.setState({ contactOneTel: v })}
-                    >电话：</InputItem>
+                        onChange={v => this.setState({ contactOneName: v })}
+                    >姓名：</InputItem>
                     <InputItem
                         clear
                         placeholder="请输入"
                         moneyKeyboardAlign="right"
                         className="right_input"
-                        onChange={v => this.setState({ relationOne: v })}
-                    >电弧：</InputItem>
+                        onChange={v => this.setState({ contactOneTel: v })}
+                    >电话：</InputItem>
                     <InputItem
                         clear
                         placeholder="请输入"
@@ -177,21 +179,21 @@ class ApplyInfo extends Base {
                         placeholder="请输入"
                         moneyKeyboardAlign="right"
                         className="right_input"
-                        onChange={v => this.setState({ relationTwo: v })}
+                        onChange={v => this.setState({ contactTwoName: v })}
+                    >姓名：</InputItem>
+                    <InputItem
+                        clear
+                        placeholder="请输入"
+                        moneyKeyboardAlign="right"
+                        className="right_input"
+                        onChange={v => this.setState({ contactTwoTel: v })}
                     >电话：</InputItem>
                     <InputItem
                         clear
                         placeholder="请输入"
                         moneyKeyboardAlign="right"
                         className="right_input"
-                        onChange={v => this.setState({ companyName: v })}
-                    >电弧：</InputItem>
-                    <InputItem
-                        clear
-                        placeholder="请输入"
-                        moneyKeyboardAlign="right"
-                        className="right_input"
-                        onChange={v => this.setState({ companyAddress: v })}
+                        onChange={v => this.setState({ relationTwo: v })}
                     >关系：</InputItem>
                 </List>
                 <WhiteSpace/>
@@ -201,14 +203,14 @@ class ApplyInfo extends Base {
                         placeholder="请输入"
                         moneyKeyboardAlign="right"
                         className="right_input"
-                        onChange={v => this.setState({ userName: v })}
+                        onChange={v => this.setState({ companyName: v })}
                     >单位名称：</InputItem>
                     <InputItem
                         clear
                         placeholder="请输入"
                         moneyKeyboardAlign="right"
                         className="right_input"
-                        onChange={v => this.setState({ userName: v })}
+                        onChange={v => this.setState({ companyAddress: v })}
                     >单位地址：</InputItem>
                     <Picker 
                         data={ incomeList }
