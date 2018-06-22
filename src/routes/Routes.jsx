@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-d
 
 import GetWxCode from '../pages/GetWxCode'
 import HomePage from '../pages/HomePage'
+import ApplyInfo from '../pages/ApplyInfo'
 import SubPage from '../pages/SubPage'
 import NotFound from '../pages/NotFound'
 
@@ -18,6 +19,7 @@ class Routes extends React.Component {
 					<Route exact path="/" render={() => (<Redirect to="/home"/>)} />
 					<Route exact path={"/getwxcode"} component={ GetWxCode }/>
 					<Route path={"/home"} component={ HomePage }/>
+					<Route path={"/apply"} component={ ApplyInfo }/>
 					<Route path={"/subhome"} component={ SubPage }/>
 					<Route component={ NotFound } />
 				</Switch>

@@ -1,10 +1,10 @@
 import React from 'react'
 import Base from '../config/Base'
-import { getQueryString } from '../common/utils';
+import { getQueryString } from '../common/utils'
 import { wxUtilsInit } from '../common/wxUtils'
-import { connect } from 'react-redux'
 import styled from 'styled-components'
-import { Button, WhiteSpace } from 'antd-mobile'
+import { WhiteSpace, WingBlank } from 'antd-mobile'
+import HomeBotton from '../components/HomeButton'
 
 class HomePage extends Base {
 	constructor(props) {
@@ -12,62 +12,69 @@ class HomePage extends Base {
 		this.state = {};
 	}
 
-	toast() {
-		this.props.history.push('/subhome');
-	}
-
 	componentDidMount() {
+		this.setTitle('微科信息服务');
 		// 用户同意授权，获取code
 		const code = getQueryString('code');
 		console.log(code);
 		// TODO 利用code换取用户数据
-		wxUtilsInit('', '', '');
+		wxUtilsInit('', '', '', () => {
+			console.log('jssdk初始化完成');
+		}, error => {
+			console.log(error);
+			console.log('jssdk初始化失败');
+		});
 	}
 
     render() {
-		const { count, handleClick } = this.props;
       	return (
-        	<div>
-				<WhiteSpace />
-				<Button type="primary" onClick={ this.toast.bind(this) }>primary</Button>
-				<WhiteSpace />
-				{ count }
-				<Div onClick={ handleClick }>+</Div>
-			</div>
+        	<HomeContainer>
+				<img src={require("../static/img/weike_logo.png")} className="logo" alt="logo"/>
+				<div className="title">微科技信息服务</div>
+				<div className="btns">
+					<WingBlank><HomeBotton icon={require("../static/img/home_icon.png")} title="我要借款" action={ () => {
+						this.props.history.push('/apply');
+					}}/></WingBlank>
+					<WhiteSpace/>
+					<WingBlank><HomeBotton icon={require("../static/img/wallet_icon.png")} title="发起借款"action={ () => {
+						// TODO
+					}}/></WingBlank>
+					<WhiteSpace/>
+					<WingBlank><HomeBotton icon={require("../static/img/person_icon.png")} title="我的贷款"action={ () => {
+						// TODO
+					}}/></WingBlank>
+				</div>
+			</HomeContainer>
       	);
     }
 }
 
-function mapStateToProps(state) {
-	return {
-	  	count: state.counter.count
-	}
-}
-
-function mapDispatchToProps(dispatch) {
-	return {
-	  	handleClick: () => {
-			dispatch({
-			  	type: 'increase'
-			})
-	  	}
-	}
-}
-
 // 编写行内样式
-const Div = styled.div`
-  	display: block;
-	color: #ccc;
-	font-size: 1em;
-	margin: 1em;
-	padding: 0.25em 1em;
-	border: 2px solid white;
-	border-radius: 3px;
-	text-align: center;
-	a{
-		text-decoration: none;
-		color: #ccc;
+const HomeContainer = styled.div`
+	position: relative;
+  	display: flex;
+	flex-direction: column;
+	align-items: center;
+	min-height: 100vh;
+	background: #f7f7f7;
+	width: 100%;
+	padding: 0 16px;
+	box-sizing: border-box;
+	.logo{
+		margin-top: 8rem;
+		width: 14.3rem;
+	}
+	.title{
+		color: #000;
+		font-size: 2rem;
+		font-weight: 600;
+		margin-top: 0.5rem;
+	}
+	.btns{
+		position: absolute;
+		width: 100%;
+		bottom: 8rem;
 	}
 `;
 
-export default connect(mapStateToProps, mapDispatchToProps)(HomePage);
+export default HomePage;
