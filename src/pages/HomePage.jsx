@@ -4,7 +4,7 @@ import { getQueryString } from '../common/utils'
 import { wxUtilsInit } from '../common/wxUtils'
 import styled from 'styled-components'
 import { WhiteSpace, WingBlank } from 'antd-mobile'
-import HomeBotton from '../components/HomeButton'
+import HomeButton from '../components/HomeButton'
 
 class HomePage extends Base {
 	constructor(props) {
@@ -32,17 +32,23 @@ class HomePage extends Base {
 				<img src={require("../static/img/weike_logo.png")} className="logo" alt="logo"/>
 				<div className="title">微科技信息服务</div>
 				<div className="btns">
-					<WingBlank><HomeBotton icon={require("../static/img/home_icon.png")} title="我要借款" action={ () => {
-						this.props.history.push('/apply');
-					}}/></WingBlank>
+					<WingBlank>
+						<HomeButton icon={require("../static/img/home_icon.png")} title="我要借款" action={ () => {
+							this.props.history.push('/apply');
+						}}/>
+					</WingBlank>
 					<WhiteSpace/>
-					<WingBlank><HomeBotton icon={require("../static/img/wallet_icon.png")} title="发起借款"action={ () => {
-						// TODO
-					}}/></WingBlank>
+					<WingBlank>
+						<HomeButton icon={require("../static/img/wallet_icon.png")} title="发起借款"action={ () => {
+							// TODO
+						}}/>
+					</WingBlank>
 					<WhiteSpace/>
-					<WingBlank><HomeBotton icon={require("../static/img/person_icon.png")} title="我的贷款"action={ () => {
+					<WingBlank>
+						<HomeButton icon={require("../static/img/person_icon.png")} title="我的贷款"action={ () => {
 						// TODO
-					}}/></WingBlank>
+						}}/>
+					</WingBlank>
 				</div>
 			</HomeContainer>
       	);

@@ -1,7 +1,9 @@
 import React from 'react'
 import Base from '../config/Base'
 import styled from 'styled-components'
-import { List, Button, Picker,WingBlank ,InputItem, WhiteSpace } from 'antd-mobile';
+import { List, Button, Picker, WingBlank, InputItem, WhiteSpace } from 'antd-mobile'
+
+import VerifyCode from '../components/VerifyCode'
 
 class ApplyInfo extends Base {
 	constructor(props) {
@@ -9,6 +11,7 @@ class ApplyInfo extends Base {
 		this.state = {
             phoneNum: '', // 手机号
             verifyCode: '', // 验证码
+            verifyStatus: 'invalid',
             userName: '', // 姓名
             userCardCode: '', // 身份证号码
             educationVal: '', // 学历
@@ -103,16 +106,33 @@ class ApplyInfo extends Base {
                     <InputItem
                         clear
                         placeholder="输入手机号"
-                        type="phone"
-                        onChange={v => this.setState({ phoneNum: v })}
-                    ></InputItem>
-                    <InputItem
-                        clear
-                        placeholder="请填写验证码"
-                        maxLength={4}
                         type="tel"
-                        onChange={v => this.setState({ verifyCode: v })}
+                        maxLength={11}
+                        onChange={val => {
+                            this.setState({
+                                phoneNum: val
+                            })
+                            if(val.length === 11) {
+                                this.setState({
+                                    verifyStatus: 'clickable'
+                                })
+                            } else {
+                                this.setState({
+                                    verifyStatus: 'invalid'
+                                })
+                            }
+                        }}
                     ></InputItem>
+                    {/** invalid 无效 clickable 可获取验证码 cooling 倒计时 reSend 重新获取 */}
+                    <VerifyCode 
+                        status={this.state.verifyStatus}
+                        action={ () => {
+                            console.log('发送验证码');
+                            this.setState({
+                                verifyStatus: 'cooling'
+                            })
+                        }}
+                        />
                 </List>
                 <WhiteSpace/>
                 <List>
@@ -231,7 +251,30 @@ class ApplyInfo extends Base {
                 </List>
                 <WhiteSpace/>
                 <WhiteSpace/>
-                <WingBlank><Button>下一步</Button></WingBlank>
+                <WingBlank>
+                    <Button 
+                        className="apply_btn"
+                        disabled={  !this.state.phoneNum ||
+                                    !this.state.verifyCode ||
+                                    !this.state.userName ||
+                                    !this.state.userCardCode ||
+                                    !this.state.educationVal ||
+                                    !this.state.marriageVal ||
+                                    !this.state.contactOneName ||
+                                    !this.state.contactOneTel ||
+                                    !this.state.relationOne ||
+                                    !this.state.contactTwoName ||
+                                    !this.state.contactTwoTel ||
+                                    !this.state.relationTwo ||
+                                    !this.state.companyName ||
+                                    !this.state.companyAddress ||
+                                    !this.state.incomeVal ||
+                                    !this.state.startTimeVal
+                                }
+                        onClick={() => {
+                            // TODO 提交申请信息
+                    }}>下一步</Button>
+                </WingBlank>
                 <WhiteSpace/>
                 <WhiteSpace/>
 			</ApplyContainer>
@@ -245,6 +288,10 @@ const ApplyContainer = styled.div`
         input{
             text-align: right;
         }
+    }
+    .apply_btn{
+        background: #ff7700;
+        color: #fff;
     }
 `;
 
