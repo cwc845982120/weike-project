@@ -13,12 +13,12 @@ class HomePage extends Base {
 	}
 
 	componentDidMount() {
-		this.setTitle('微科信息服务');
+		this.setTitle('微科');
 		// 用户同意授权，获取code
 		const code = getQueryString('code');
 		console.log(code);
 		// TODO 利用code换取用户数据
-		wxUtilsInit('', '', '', () => {
+		wxUtilsInit('1529906692', 'GiLwS6KKQF1cOMec', 'ad1d8a7d4bb6fd5e362aaba5d0810c6874cda1af', () => {
 			console.log('jssdk初始化完成');
 		}, error => {
 			console.log(error);
@@ -33,20 +33,32 @@ class HomePage extends Base {
 				<div className="title">微科技信息服务</div>
 				<div className="btns">
 					<WingBlank>
-						<HomeButton icon={require("../static/img/home_icon.png")} title="我要借款" action={ () => {
-							this.props.history.push('/apply');
+						<HomeButton 
+							icon={require("../static/img/home_icon.png")}
+							activeIcon={require("../static/img/home_icon_active.png")}
+							title="我要借款"
+							action={ () => {
+								this.props.history.push('/apply');
 						}}/>
 					</WingBlank>
 					<WhiteSpace/>
 					<WingBlank>
-						<HomeButton icon={require("../static/img/wallet_icon.png")} title="发起借款"action={ () => {
-							// TODO
+						<HomeButton i
+							icon={require("../static/img/wallet_icon.png")}
+							activeIcon={require("../static/img/wallet_icon_active.png")}
+							title="发起借款"
+							action={ () => {
+								// TODO
 						}}/>
 					</WingBlank>
 					<WhiteSpace/>
 					<WingBlank>
-						<HomeButton icon={require("../static/img/person_icon.png")} title="我的贷款"action={ () => {
-						// TODO
+						<HomeButton 
+							icon={require("../static/img/person_icon.png")}
+							activeIcon={require("../static/img/person_icon_active.png")}
+							title="我的贷款"
+							action={ () => {
+								// TODO
 						}}/>
 					</WingBlank>
 				</div>
@@ -67,19 +79,18 @@ const HomeContainer = styled.div`
 	padding: 0 16px;
 	box-sizing: border-box;
 	.logo{
-		margin-top: 8rem;
-		width: 14.3rem;
+		margin-top: 6rem;
+		width: 12rem;
 	}
 	.title{
 		color: #000;
 		font-size: 2rem;
 		font-weight: 600;
-		margin-top: 0.5rem;
+		margin-top: 1rem;
 	}
 	.btns{
-		position: absolute;
+		margin-top: 10rem;
 		width: 100%;
-		bottom: 8rem;
 	}
 `;
 

@@ -1,6 +1,8 @@
 import React from 'react'
 import Base from '../config/Base'
 import styled from 'styled-components'
+import { wxUtilsInit } from '../common/wxUtils'
+import * as wxUtils from '../lib/wx-jssdk';
 import { WhiteSpace, WingBlank, Button } from 'antd-mobile'
 
 import CertCardUpload from '../components/CertCardUpload'
@@ -16,6 +18,42 @@ class ProfileUpload extends Base  {
 
     componentDidMount() {
         this.setTitle('身份认证');
+        wxUtilsInit('1529906692', 'GiLwS6KKQF1cOMec', 'ad1d8a7d4bb6fd5e362aaba5d0810c6874cda1af', () => {
+			console.log('jssdk初始化完成');
+		}, error => {
+			console.log(error);
+			console.log('jssdk初始化失败');
+		});
+    }
+
+    // 正面上传
+    fontUpload() {
+        wxUtils.chooseImage({
+            count: 1, // 默认9
+            sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
+            sourceType: ['camera'], // 可以指定来源是相册还是相机，默认二者都有
+            success: res => {
+                // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
+                this.setState({
+                    fontImg: res.localIds[0]
+                }); 
+            }
+        });
+    }
+
+    // 背面上传
+    backUpload() {
+        wxUtils.chooseImage({
+            count: 1, // 默认9
+            sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
+            sourceType: ['camera'], // 可以指定来源是相册还是相机，默认二者都有
+            success: res => {
+                // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
+                this.setState({
+                    backImg: res.localIds[0]
+                });
+            }
+        });
     }
 
     // 跳转合同条款
@@ -40,9 +78,7 @@ class ProfileUpload extends Base  {
                         preViewClick={() => {
                             console.log('点击预览图操作');
                         }}
-                        uploadClick={() => {
-                            console.log('点击上传照片操作');
-                        }}
+                        uploadClick={ this.fontUpload.bind(this) }
                     />
                     <WhiteSpace/>
                     <CertCardUpload
@@ -52,9 +88,7 @@ class ProfileUpload extends Base  {
                         preViewClick={() => {
                             console.log('点击预览图操作');
                         }}
-                        uploadClick={() => {
-                            console.log('点击上传照片操作');
-                        }}
+                        uploadClick={ this.backUpload.bind(this) }
                     />
                     <WhiteSpace/>
                     <WhiteSpace/>
