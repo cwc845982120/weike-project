@@ -3,7 +3,7 @@ import Base from '../config/Base'
 import styled from 'styled-components'
 import { wxUtilsInit } from '../common/wxUtils'
 import * as wxUtils from '../lib/wx-jssdk';
-import { WhiteSpace, WingBlank, Button } from 'antd-mobile'
+import { ActionSheet, WhiteSpace, WingBlank, Button, Toast } from 'antd-mobile'
 
 import CertCardUpload from '../components/CertCardUpload'
 
@@ -13,7 +13,7 @@ class ProfileUpload extends Base  {
         this.state = {
             fontImg: '',
             backImg: ''
-        }
+        };
     }
 
     componentDidMount() {
@@ -26,12 +26,19 @@ class ProfileUpload extends Base  {
 		});
     }
 
+    preView(imgUrl) {
+        wxUtils.previewImage({
+            current: imgUrl, // 当前显示图片的http链接
+            urls: [imgUrl] // 需要预览的图片http链接列表
+        });
+    }
+
     // 正面上传
     fontUpload() {
         wxUtils.chooseImage({
             count: 1, // 默认9
-            sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
-            sourceType: ['camera'], // 可以指定来源是相册还是相机，默认二者都有
+            sizeType: ['original'], // 可以指定是原图还是压缩图，默认二者都有
+            sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
             success: res => {
                 // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
                 this.setState({
@@ -45,8 +52,8 @@ class ProfileUpload extends Base  {
     backUpload() {
         wxUtils.chooseImage({
             count: 1, // 默认9
-            sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
-            sourceType: ['camera'], // 可以指定来源是相册还是相机，默认二者都有
+            sizeType: ['original'], // 可以指定是原图还是压缩图，默认二者都有
+            sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
             success: res => {
                 // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
                 this.setState({
@@ -56,9 +63,36 @@ class ProfileUpload extends Base  {
         });
     }
 
+    submitInfo() {
+        Toast.loading("上传中...", 0);
+        // 照片上传
+        new Promise((resolve, reject) => {
+            wxUtils.uploadImage({
+                localId: this.state.fontImg,
+                isShowProgressTips: 1,
+                success: res => {
+                    resolve();
+                }
+            });
+        }).then(() => {
+            wxUtils.uploadImage({
+                localId: this.state.backImg,
+                isShowProgressTips: 1,
+                success: res => {
+                    Toast.hide();
+                    // 页面跳转 TODO
+                }
+            });
+        }).catch(e => {
+            Toast.hide();
+            console.log(e.message);
+            this.showToast('身份信息上传失败');
+        })
+    }
+
     // 跳转合同条款
     toAgreement() {
-        // TODO
+        this.props.history.push('/submitsuccess');
     }
 
     render() {
@@ -76,7 +110,18 @@ class ProfileUpload extends Base  {
                         strongText="姓名面"
                         preViewImg={require('../static/img/apply_received.png')}
                         preViewClick={() => {
-                            console.log('点击预览图操作');
+                            ActionSheet.showActionSheetWithOptions({
+                                options: ["预览", "重新上传", "取消"],
+                                cancelButtonIndex: 2,
+                                maskClosable: true,
+                                },  
+                                (buttonIndex) => {
+                                    if (buttonIndex === 0) {
+                                        this.preView(this.state.fontImg);
+                                    } else if (buttonIndex === 1) {
+                                        this.fontUpload();
+                                    }
+                            });
                         }}
                         uploadClick={ this.fontUpload.bind(this) }
                     />
@@ -86,7 +131,18 @@ class ProfileUpload extends Base  {
                         strongText="国徽面"
                         preViewImg=""
                         preViewClick={() => {
-                            console.log('点击预览图操作');
+                            ActionSheet.showActionSheetWithOptions({
+                                options: ["预览", "重新上传", "取消"],
+                                cancelButtonIndex: 2,
+                                maskClosable: true,
+                                },  
+                                (buttonIndex) => {
+                                    if (buttonIndex === 0) {
+                                        this.preView(this.state.backImg);
+                                    } else if (buttonIndex === 1) {
+                                        this.backUpload();
+                                    }
+                            });
                         }}
                         uploadClick={ this.backUpload.bind(this) }
                     />
@@ -101,10 +157,7 @@ class ProfileUpload extends Base  {
                         <Button 
                             className="active"
                             disabled={!this.state.fontImg || !this.state.backImg}
-                            onClick={() => {
-                                // 跳转至页面操作成功
-                                this.props.history.push('/submitsuccess');
-                        }}>提交信息</Button>
+                            onClick={this.submitInfo.bind(this)}>提交信息</Button>
                     </WingBlank>
                     <WhiteSpace/>
                     <WingBlank>

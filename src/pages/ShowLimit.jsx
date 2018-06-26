@@ -18,7 +18,7 @@ class ShowLimit extends Base {
 
     // 获取贷款
     getLimit() {
-        // TODO
+        this.props.history.push('/getloans');
     }
 
     render() {

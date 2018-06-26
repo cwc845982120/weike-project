@@ -5,25 +5,25 @@ import { Button } from 'antd-mobile'
 class VerifyCode extends React.Component {
     constructor(props) {
         super(props);
+        this.timer = null;
         this.state = {
             status: "invalid", // invalid 无效 clickable 可获取验证码 cooling 倒计时 reSend 重新获取
             disabled: true,
             btnStyle: "btn invalid",
-            btnText: "发送验证码",
-            timer: null
+            btnText: "发送验证码"
         }
     }
 
     // 状态改变时触发
     componentWillReceiveProps(newProps) {
-        // invalid 无效 clickable 可获取验证码 cooling 倒计时 reSend 重新获取
-        if (newProps.status === "invalid" && !this.state.timer) {
+        // invalid 无效 clickable 可获取验证码 cooling 倒计时
+        if (newProps.status === "invalid" && !this.timer) {
             this.setState({
                 disabled: true,
                 btnStyle: "btn invalid",
                 btnText: "发送验证码"
             });
-        } else if (newProps.status === "clickable" && !this.state.timer) {
+        } else if (newProps.status === "clickable" && !this.timer) {
             this.setState({
                 disabled: false,
                 btnStyle: "btn can_send",
@@ -31,7 +31,7 @@ class VerifyCode extends React.Component {
             });
         } else if (newProps.status === "cooling") {
             let seconds = 5;
-            let timer = setInterval(() => {
+            this.timer = setInterval(() => {
                 if (seconds > 0) {
                     this.setState({
                         disabled: true,
@@ -39,24 +39,15 @@ class VerifyCode extends React.Component {
                         btnText: `剩余${seconds--}s`
                     });
                 } else {
-                    clearInterval(this.state.timer);
+                    clearInterval(this.timer);
                     this.setState({
-                        status: "reSend",
+                        status: "invalid",
                         disabled: false,
                         btnStyle: "btn can_send",
                         btnText: "重新获取",
                     });
                 }
             }, 1000)
-            this.setState({
-                timer
-            })
-        } else if (newProps.status === "reSend") {
-            this.setState({
-                disabled: false,
-                btnStyle: "btn can_send",
-                btnText: "重新获取"
-            });
         }
     }
 
@@ -88,6 +79,7 @@ const VerifyCodeContainer = styled.div`
     display: flex;
     height: 44px;
     padding: 0 16px;
+    left: -8px;
     input{
         border: 0;
         font-size: 17px;

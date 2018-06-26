@@ -1,6 +1,7 @@
 import React from 'react'
 import Base from '../config/Base'
 import styled from 'styled-components'
+import { Button, WingBlank } from 'antd-mobile'
 
 class SubmitSuccess extends Base {
 
@@ -16,6 +17,16 @@ class SubmitSuccess extends Base {
                 <div className="tip">
                     <p>您已经成功提交申请信息！</p>
                 </div>
+                <BtnContainer>
+                    <WingBlank>
+                        <Button 
+                            className="btn"
+                            onClick={() => {
+                                this.props.history.push('/');
+                            }}
+                            >回到首页</Button>
+                    </WingBlank>
+                </BtnContainer>
             </ApplySuccessContainer>
       	);
     }
@@ -39,6 +50,16 @@ const ApplySuccessContainer = styled.div`
         color: #888888;
         font-size: 1.4rem;
         margin: 1rem 0;
+    }
+`;
+
+const BtnContainer = styled.div`
+    position: absolute;
+    bottom: 12rem;
+    width: 100%;
+    .btn{
+        color: #fff;
+        background: #FF7700;
     }
 `;
 

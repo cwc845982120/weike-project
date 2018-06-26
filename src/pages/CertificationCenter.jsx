@@ -10,7 +10,7 @@ class CertificationCenter extends Base {
     }
 
     certificate() {
-        // TODO
+        this.props.history.push('/apply');
     }
 
     render() {

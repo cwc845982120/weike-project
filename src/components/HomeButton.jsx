@@ -13,7 +13,7 @@ class HomeButton extends React.Component {
                 background: #ff7700;
                 color: #fff;
                 .icon{
-                    background-image: url(${this.props.activeIcon});
+                    background-image: url(${this.props.activeIcon || this.props.icon});
                 }
             }
             span{
@@ -29,7 +29,8 @@ class HomeButton extends React.Component {
                 left: 1.5rem;
                 width: 3.3rem;
                 height: 2.8rem; 
-                background-size: 100% 100% no-repeat;
+                background-repeat: no-repeat;
+                background-size: contain;
                 background-image: url(${this.props.icon});
             }
         `;

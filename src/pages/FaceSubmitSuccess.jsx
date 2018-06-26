@@ -15,14 +15,14 @@ class SubmitSuccess extends Base {
                 <img src={require('../static/img/success_icon.png')} alt="logo" className="logo"/>
                 <div className="title">操作成功</div>
                 <div className="tip">
-                    <p>您已经成功提交申请信息！</p>
+                    <p>人脸验证成功！</p>
                 </div>
                 <BtnContainer>
                     <WingBlank>
                         <Button 
                             className="btn"
                             onClick={() => {
-                                // TODO
+                                this.props.history.push('/profileupload');
                             }}
                             >下一步</Button>
                     </WingBlank>

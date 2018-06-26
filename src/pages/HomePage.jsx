@@ -1,7 +1,6 @@
 import React from 'react'
 import Base from '../config/Base'
 import { getQueryString } from '../common/utils'
-import { wxUtilsInit } from '../common/wxUtils'
 import styled from 'styled-components'
 import { WhiteSpace, WingBlank } from 'antd-mobile'
 import HomeButton from '../components/HomeButton'
@@ -17,13 +16,6 @@ class HomePage extends Base {
 		// 用户同意授权，获取code
 		const code = getQueryString('code');
 		console.log(code);
-		// TODO 利用code换取用户数据
-		wxUtilsInit('1529906692', 'GiLwS6KKQF1cOMec', 'ad1d8a7d4bb6fd5e362aaba5d0810c6874cda1af', () => {
-			console.log('jssdk初始化完成');
-		}, error => {
-			console.log(error);
-			console.log('jssdk初始化失败');
-		});
 	}
 
     render() {
@@ -38,6 +30,7 @@ class HomePage extends Base {
 							activeIcon={require("../static/img/home_icon_active.png")}
 							title="我要借款"
 							action={ () => {
+								// 是否注册 如果注册成功 您已注册成功页 没有注册成功提交注册信息
 								this.props.history.push('/apply');
 						}}/>
 					</WingBlank>
@@ -48,7 +41,7 @@ class HomePage extends Base {
 							activeIcon={require("../static/img/wallet_icon_active.png")}
 							title="发起借款"
 							action={ () => {
-								// TODO
+								this.props.history.push('/showlimit');
 						}}/>
 					</WingBlank>
 					<WhiteSpace/>
@@ -58,7 +51,7 @@ class HomePage extends Base {
 							activeIcon={require("../static/img/person_icon_active.png")}
 							title="我的贷款"
 							action={ () => {
-								// TODO
+								this.props.history.push('/borrowsearch');
 						}}/>
 					</WingBlank>
 				</div>

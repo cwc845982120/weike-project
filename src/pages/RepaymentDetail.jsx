@@ -1,6 +1,7 @@
 import React from 'react'
 import Base from '../config/Base'
 import styled from 'styled-components'
+import { getQueryString } from '../common/utils'
 import { WhiteSpace, List } from 'antd-mobile'
 
 import CellText from '../components/CellText'
@@ -11,6 +12,8 @@ class RepaymentDetail extends Base {
 
     componentDidMount() {
         this.setTitle('借还查询');
+        let id = getQueryString('id');
+        console.log(id);
     }
 
     render() {

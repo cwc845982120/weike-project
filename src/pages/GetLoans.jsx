@@ -28,7 +28,7 @@ class GetLoans extends Base {
 
     // 跳转合同条款
     toAgreement() {
-        // TODO
+        this.props.history.push('/seeagreements');
     }
 
     render() {
@@ -127,7 +127,9 @@ class GetLoans extends Base {
                 </List>
                 <div className="footer">
                     <WingBlank>
-                        <Button className="btn">提交获取贷款</Button>
+                        <Button className="btn" onClick={() => {
+                            this.props.history.push('/applyreceived');
+                        }}>提交获取贷款</Button>
                     </WingBlank>
                     <WhiteSpace/>
                     <WingBlank>

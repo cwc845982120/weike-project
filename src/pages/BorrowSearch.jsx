@@ -19,8 +19,8 @@ class BorrowSearch extends Base {
         this.state = {
             refreshing: true,
             down: true,
-            borrowRecordArr: [],
-            repaymentRecordArr: [],
+            borrowRecordArr: [{}],
+            repaymentRecordArr: [{}],
             BorrowRecordList,
             RepaymentRecordList,
             isLoading: true,
@@ -46,6 +46,10 @@ class BorrowSearch extends Base {
             return;
         }
         console.log('loadMore');
+    }
+
+    toDetail(id) {
+        this.props.history.push(`/repaymentdetail?id=${id}`);
     }
 
     renderBorrowRecord() {
@@ -85,7 +89,10 @@ class BorrowSearch extends Base {
                             {this.state.isLoading ? '加载中...' : '没有更多数据啦~~~'}
                         </div>
                     )}
-                    renderRow={() => <RepaymentRecordItem />}
+                    renderRow={(item) => <RepaymentRecordItem
+                        data={{id: 1}}
+                        action={this.toDetail.bind(this, 1)}
+                    />}
                     style={{
                         height: this.state.height,
                         overflow: 'auto',

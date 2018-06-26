@@ -3,50 +3,45 @@ import Base from '../config/Base'
 import styled from 'styled-components'
 import { Button, WingBlank, WhiteSpace } from 'antd-mobile'
 
-class FaceCheckFail extends Base {
+class FaceCheck extends Base  {
 
     componentDidMount() {
-        this.setTitle('验证失败');
+        this.setTitle('人脸识别');
+    }
+
+    toCheckFace() {
+        // TODO
+        this.props.history.push('facesubmitsuccess');
     }
 
     render() {
-      	return (
-        	<ApplySuccessContainer>
-                <img src={require('../static/img/fail_icon.png')} alt="logo" className="logo"/>
-                <div className="title">验证失败</div>
-                <div className="subtitle">可以通过以下方式提高</div>
+        return (
+            <FaceUploadContainer>
+                <WhiteSpace/>
+                <div className="title">可以通过以下方式提高</div>
                 <div className="tip">
                     <p>1.正对手机</p>
                     <p>2.保持光线充足和均匀</p>
                     <p>3.摘掉眼镜，并露出耳朵</p>
                     <p>4.纯色背景</p>
                 </div>
+                <div className="subtitle">点击进入人脸识别界面</div>
                 <BtnContainer>
                     <WingBlank>
                         <Button
                             className="recheck"
-                            onClick={ () => {
-                                this.props.history.push('/faceupload');
-                            }}
-                        >重新认证</Button>
+                            onClick={this.toCheckFace.bind(this)}
+                        >刷脸识别</Button>
                     </WingBlank>
                     <WhiteSpace/>
-                    <WingBlank>
-                        <Button
-                            className="back"
-                            onClick={ () => {
-                                this.props.history.push('/certificationcenter');
-                            }}
-                        >返回</Button>
-                    </WingBlank>
                 </BtnContainer>
-            </ApplySuccessContainer>
-      	);
+            </FaceUploadContainer>
+        )
     }
 }
 
 // 编写行内样式
-const ApplySuccessContainer = styled.div`
+const FaceUploadContainer = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -56,11 +51,16 @@ const ApplySuccessContainer = styled.div`
         margin: 4.5rem 0 1.5rem 0;
     }
     .title{
-        font-size: 2rem;
+        width: 100%;
+        font-size: 1.8rem;
+        margin: 2rem 0 0 0;
+        padding-bottom: 2rem;
+        text-align: center;
+        border-bottom: 1px #EAEAEA solid;
     }
     .subtitle{
         font-size: 1.8rem;
-        margin: 3rem 0 0 0;
+        margin: 10rem 0 0 0;
     }
     .tip{
         position: relative;
@@ -84,4 +84,4 @@ const BtnContainer = styled.div`
     }
 `;
 
-export default FaceCheckFail;
+export default FaceCheck;

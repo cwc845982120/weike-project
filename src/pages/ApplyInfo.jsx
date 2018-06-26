@@ -254,25 +254,25 @@ class ApplyInfo extends Base {
                 <WingBlank>
                     <Button 
                         className="apply_btn"
-                        disabled={  !this.state.phoneNum ||
-                                    !this.state.verifyCode ||
-                                    !this.state.userName ||
-                                    !this.state.userCardCode ||
-                                    !this.state.educationVal ||
-                                    !this.state.marriageVal ||
-                                    !this.state.contactOneName ||
-                                    !this.state.contactOneTel ||
-                                    !this.state.relationOne ||
-                                    !this.state.contactTwoName ||
-                                    !this.state.contactTwoTel ||
-                                    !this.state.relationTwo ||
-                                    !this.state.companyName ||
-                                    !this.state.companyAddress ||
-                                    !this.state.incomeVal ||
+                        disabled={  !this.state.phoneNum &&
+                                    !this.state.verifyCode &&
+                                    !this.state.userName &&
+                                    !this.state.userCardCode &&
+                                    !this.state.educationVal &&
+                                    !this.state.marriageVal &&
+                                    !this.state.contactOneName &&
+                                    !this.state.contactOneTel &&
+                                    !this.state.relationOne &&
+                                    !this.state.contactTwoName &&
+                                    !this.state.contactTwoTel &&
+                                    !this.state.relationTwo &&
+                                    !this.state.companyName &&
+                                    !this.state.companyAddress &&
+                                    !this.state.incomeVal &&
                                     !this.state.startTimeVal
                                 }
                         onClick={() => {
-                            // TODO 提交申请信息
+                            this.props.history.push('/certificationcenter');
                     }}>下一步</Button>
                 </WingBlank>
                 <WhiteSpace/>

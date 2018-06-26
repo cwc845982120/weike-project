@@ -15,7 +15,7 @@ import SeeAgreements from '../pages/SeeAgreements'
 import SubmitSuccess from '../pages/SubmitSuccess'
 import FaceSubmitSuccess from '../pages/FaceSubmitSuccess'
 import FaceCheckFail from '../pages/FaceCheckFail'
-import FaceUpload from '../pages/FaceUpload'
+import FaceCheck from '../pages/FaceCheck'
 import ProfileUpload from '../pages/ProfileUpload'
 import NotFound from '../pages/NotFound'
 
@@ -27,7 +27,7 @@ class Routes extends React.Component {
 			<Router>
 				<Switch>
 					{ /** 默认跳转home页 */ }
-					<Route exact path="/" render={() => (<Redirect to="/home"/>)} />
+					<Route exact path="/" render={() => (<Redirect to="/certificationcenter"/>)} />
 					{ /** 获取微信code页 */ }
 					<Route exact path={"/getwxcode"} component={ GetWxCode }/>
 					{ /** 首页 */ }
@@ -55,7 +55,7 @@ class Routes extends React.Component {
 					{ /** 人脸验证失败页 */ }
 					<Route path={"/facecheckfail"} component={ FaceCheckFail }/>
 					{ /** 人脸上传页 */ }
-					<Route path={"/faceupload"} component={ FaceUpload }/>
+					<Route path={"/facecheck"} component={ FaceCheck }/>
 					{ /** 身份证上传页 */ }
 					<Route path={"/profileupload"} component={ ProfileUpload }/>
 					{ /** 404页 */ }
