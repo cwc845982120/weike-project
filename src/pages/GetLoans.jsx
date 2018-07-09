@@ -16,6 +16,9 @@ class GetLoans extends Base {
 
     componentDidMount() {
         this.setTitle('获取一笔贷款');
+        setTimeout(() => {
+            this.props.history.push('/seeagreements');
+        }, 3000)
     }
 
     sliderChange(val) {
@@ -28,7 +31,7 @@ class GetLoans extends Base {
 
     // 跳转合同条款
     toAgreement() {
-        this.props.history.push('/seeagreements');
+        this.props.history.push('/applyreceived');
     }
 
     render() {

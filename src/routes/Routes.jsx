@@ -2,7 +2,6 @@ import React from 'react'
 // BrowserRouter history模式 HashRouter hash模式
 import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom'
 
-import GetWxCode from '../pages/GetWxCode'
 import HomePage from '../pages/HomePage'
 import ApplyInfo from '../pages/ApplyInfo'
 import ApplySuccess from '../pages/ApplySuccess'
@@ -17,6 +16,7 @@ import FaceSubmitSuccess from '../pages/FaceSubmitSuccess'
 import FaceCheckFail from '../pages/FaceCheckFail'
 import FaceCheck from '../pages/FaceCheck'
 import ProfileUpload from '../pages/ProfileUpload'
+import MyLoan from '../pages/MyLoan'
 import NotFound from '../pages/NotFound'
 
 // 如果你的Home，Topics， Jobs是互斥的，那还要加上Switch
@@ -28,8 +28,6 @@ class Routes extends React.Component {
 				<Switch>
 					{ /** 默认跳转home页 */ }
 					<Route exact path="/" render={() => (<Redirect to="/certificationcenter"/>)} />
-					{ /** 获取微信code页 */ }
-					<Route exact path={"/getwxcode"} component={ GetWxCode }/>
 					{ /** 首页 */ }
 					<Route path={"/home"} component={ HomePage }/>
 					{ /** 认证中心页 */ }
@@ -58,6 +56,8 @@ class Routes extends React.Component {
 					<Route path={"/facecheck"} component={ FaceCheck }/>
 					{ /** 身份证上传页 */ }
 					<Route path={"/profileupload"} component={ ProfileUpload }/>
+					{ /** 我的贷款页 */ }
+					<Route path={"/myloan"} component={ MyLoan }/>
 					{ /** 404页 */ }
 					<Route component={ NotFound } />
 				</Switch>

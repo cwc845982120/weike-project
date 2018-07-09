@@ -2,6 +2,11 @@ import React from 'react'
 import styled from 'styled-components'
 
 class CertCardUpload extends React.Component {
+
+    handleImageUpload(event) {
+        this.props.handleImageUpload(event);
+    }
+
     render() {
         const content = () => {
             if (this.props.preViewImg) {
@@ -14,14 +19,13 @@ class CertCardUpload extends React.Component {
                 )
             }
             return (
-                <div className="no_img" onClick={ () => {
-                            this.props.uploadClick()
-                        }}>
+                <div className="no_img">
                     <img src={require('../static/img/upload_icon.png')} alt="logo" className="icon"/>
                     <div className="tips">
                         <span>{this.props.text}</span>
                         <span className="strong">{this.props.strongText}</span>
                     </div>
+                    <input type="file" name="image" onChange={this.handleImageUpload.bind(this)} accept="image/*" className="input_file"/>
                 </div>
             )
         }
@@ -40,6 +44,7 @@ const CertCardUploadContainer = styled.div`
     border-radius: 0.3rem;
     overflow: hidden;
     .no_img{
+        position: relative;
         padding: 6rem 0 3rem 0;
         display: flex;
         flex-direction: column;
@@ -64,6 +69,14 @@ const CertCardUploadContainer = styled.div`
     }
     .strong{
         color: #000;
+    }
+    .input_file{
+        position: absolute;
+        left: 50%;
+        height: 100%;
+        width: 100%;
+        transform: translateX(-50%);
+        opacity: 0;
     }
 `
 

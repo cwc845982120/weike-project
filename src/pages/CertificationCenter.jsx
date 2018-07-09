@@ -3,6 +3,8 @@ import Base from '../config/Base'
 import styled from 'styled-components'
 import { WhiteSpace, WingBlank, Button } from 'antd-mobile'
 
+import CompanySearch from '../components/CompanySearch'
+
 class CertificationCenter extends Base {
 
     componentDidMount() {
@@ -16,6 +18,9 @@ class CertificationCenter extends Base {
     render() {
       	return (
         	<CertificationContainer>
+                <div className="search_wrapper">
+                    <CompanySearch />
+                </div>
 				<img src={require('../static/img/certification_bg.png')} alt="认证" className="bg" />
                 <WhiteSpace/>
                 <WingBlank>
@@ -31,6 +36,14 @@ class CertificationCenter extends Base {
 
 // 编写行内样式
 const CertificationContainer = styled.div`
+    position: relative;
+    .search_wrapper{
+        width: 86%;
+        position: absolute;
+        top: 10%;
+        left: 50%;
+        transform: translateX(-50%);
+    }
 	.bg{
         width: 100%;
     }

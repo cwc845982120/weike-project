@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-let mode = process.env.NODE_ENV === 'production' ? 2 : 1; // 0:本地 1:测试 2:生产;
+let mode = process.env.NODE_ENV === 'production' ? 2 : 1; // 0:本地 1:生产;
 
 // axios 配置
 axios.defaults.timeout = 10000;
@@ -9,10 +9,8 @@ axios.defaults.headers = {
 };
 
 if (mode === 0) {
-	axios.defaults.baseURL = 'https://mock.caowencheng.cn/mock';
+	axios.defaults.baseURL = 'http://192.168.1.8:8080';
 } else if (mode === 1) {
-	axios.defaults.baseURL = 'https://mock.caowencheng.cn/mock'; // 测试
-} else if (mode === 2) {
 	axios.defaults.baseURL = 'https://mock.caowencheng.cn/mock'; // 生产
 }
 

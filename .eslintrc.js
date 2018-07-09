@@ -55,7 +55,7 @@ module.exports = {
             }
         ],
         "no-nested-ternary": 2,
-        "no-new": 2,
+        "no-new": 0,
         "no-new-wrappers": 2,
         "no-param-reassign": 2,
         "no-redeclare": 2,

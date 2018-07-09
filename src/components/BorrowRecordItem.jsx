@@ -10,6 +10,7 @@ class BorrowRecordItem extends Base {
       	return (
         	<BorrowRecordItemContainer>
                 <List>
+                    <Item extra={'查看详情'} arrow="horizontal" onClick={this.props.toDetail}>&nbsp;</Item>
                     <Item extra={'2018年5月8日'} className="black_val">提现时间</Item>
                     <Item extra={'每月21日'} className="black_val gary_title">每期还款日</Item>
                     <Item extra={'3'} className="black_val gary_title">期数</Item>

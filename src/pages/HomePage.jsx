@@ -31,11 +31,11 @@ class HomePage extends Base {
 							title="我要借款"
 							action={ () => {
 								// 是否注册 如果注册成功 您已注册成功页 没有注册成功提交注册信息
-								this.props.history.push('/apply');
+								this.props.history.push('/showlimit');
 						}}/>
 					</WingBlank>
 					<WhiteSpace/>
-					<WingBlank>
+					{/** <WingBlank>
 						<HomeButton i
 							icon={require("../static/img/wallet_icon.png")}
 							activeIcon={require("../static/img/wallet_icon_active.png")}
@@ -43,7 +43,7 @@ class HomePage extends Base {
 							action={ () => {
 								this.props.history.push('/showlimit');
 						}}/>
-					</WingBlank>
+					</WingBlank> */}
 					<WhiteSpace/>
 					<WingBlank>
 						<HomeButton 

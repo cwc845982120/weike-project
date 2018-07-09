@@ -10,8 +10,8 @@ class FaceCheck extends Base  {
     }
 
     toCheckFace() {
-        // TODO
-        this.props.history.push('facesubmitsuccess');
+        window.location.href = "https://api.megvii.com/faceid/lite/do?token=a5455e86ba14e2edd085420854772b7d"
+        
     }
 
     render() {

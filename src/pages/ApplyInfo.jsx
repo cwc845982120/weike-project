@@ -3,8 +3,6 @@ import Base from '../config/Base'
 import styled from 'styled-components'
 import { List, Button, Picker, WingBlank, InputItem, WhiteSpace } from 'antd-mobile'
 
-import VerifyCode from '../components/VerifyCode'
-
 class ApplyInfo extends Base {
 	constructor(props) {
 		super(props);
@@ -32,6 +30,20 @@ class ApplyInfo extends Base {
 	componentDidMount() {
         this.setTitle('申请信息填写');
 	}
+
+    // 申请接口
+    applyAction() {
+        this.getResponse('/api/submitUserInfo', {
+            username: '', // 姓名
+            idcardnum: '', // 身份证号
+            ismarriage: '', // 是否结婚
+            edulevel: '', // 学历
+            enterpname: '', // 单位名称
+            enterpaddress: '', // 单位地址
+            enterpincome: '', // 
+        })
+        // this.props.history.push('/profileupload');
+    }
 
     render() {
         // 学历列表
@@ -101,39 +113,6 @@ class ApplyInfo extends Base {
         }];
       	return (
         	<ApplyContainer>
-                <WhiteSpace/>
-                <List>
-                    <InputItem
-                        clear
-                        placeholder="输入手机号"
-                        type="tel"
-                        maxLength={11}
-                        onChange={val => {
-                            this.setState({
-                                phoneNum: val
-                            })
-                            if(val.length === 11) {
-                                this.setState({
-                                    verifyStatus: 'clickable'
-                                })
-                            } else {
-                                this.setState({
-                                    verifyStatus: 'invalid'
-                                })
-                            }
-                        }}
-                    ></InputItem>
-                    {/** invalid 无效 clickable 可获取验证码 cooling 倒计时 reSend 重新获取 */}
-                    <VerifyCode 
-                        status={this.state.verifyStatus}
-                        action={ () => {
-                            console.log('发送验证码');
-                            this.setState({
-                                verifyStatus: 'cooling'
-                            })
-                        }}
-                        />
-                </List>
                 <WhiteSpace/>
                 <List>
                     <InputItem
@@ -272,7 +251,7 @@ class ApplyInfo extends Base {
                                     !this.state.startTimeVal
                                 }
                         onClick={() => {
-                            this.props.history.push('/certificationcenter');
+                            this.applyAction.bind(this);
                     }}>下一步</Button>
                 </WingBlank>
                 <WhiteSpace/>

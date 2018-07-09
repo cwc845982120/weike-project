@@ -33,6 +33,23 @@ export default class Base extends React.Component {
         })
     }
 
+    // 单个文件上传
+    uploadFile(url, file){
+        const formData = new FormData();
+        formData.append('img', file, file.name);
+        return new Promise( (resolve, reject) => {
+            axios.post(url, formData, {
+                headers:{'Content-Type': 'multipart/form-data'}
+            }).then( res => {
+                resolve(res);
+            })
+            .catch(e => {
+                console.log(e.message);
+                resolve(e);
+            })
+        })
+    }
+
     // 多个 axios 请求
     getAnyResponses(requests){
         const promises = Promise.all(requests);
