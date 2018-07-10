@@ -7,9 +7,6 @@ class ApplyInfo extends Base {
 	constructor(props) {
 		super(props);
 		this.state = {
-            phoneNum: '', // 手机号
-            verifyCode: '', // 验证码
-            verifyStatus: 'invalid',
             userName: '', // 姓名
             userCardCode: '', // 身份证号码
             educationVal: '', // 学历
@@ -22,8 +19,7 @@ class ApplyInfo extends Base {
             relationTwo: '', // 联系人2关系
             companyName: '', // 单位名称
             companyAddress: '', // 单位地址
-            incomeVal: '', // 收入状况
-            startTimeVal: '' // 企业成立时间
+            incomeVal: '' // 收入状况
         };
 	}
 
@@ -34,13 +30,28 @@ class ApplyInfo extends Base {
     // 申请接口
     applyAction() {
         this.getResponse('/api/submitUserInfo', {
-            username: '', // 姓名
-            idcardnum: '', // 身份证号
-            ismarriage: '', // 是否结婚
-            edulevel: '', // 学历
-            enterpname: '', // 单位名称
-            enterpaddress: '', // 单位地址
-            enterpincome: '', // 
+            appName: this.state.userName, // 姓名
+            appIdnumber: this.state.userCardCode, // 身份证号
+            appEduLevel: this.state.educationVal[0], // 学历
+            appMarrage: this.state.marriageVal[0], // 是否结婚
+            emergencycontactname: this.state.contactOneName, // 紧急联系人姓名
+            emergencycontactphone: this.state.contactOneTel, // 紧急联系人电话
+            emergencycontactrelationship: this.state.relationOne, // 紧急联系人关系
+            emergencycontactname2: this.state.contactTwoName, // 紧急2联系人姓名
+            emergencycontactphone2: this.state.contactTwoTel, // 紧急2联系人电话
+            emergencycontactrelationship2: this.state.relationTwo, // 紧急2联系人关系
+            appCompany: this.state.companyName, // 单位名称
+            appCompanyAddress: this.state.companyAddress, // 单位地址
+            appBusinessScale: this.state.incomeVal[0] // 企业年度营收规模
+        }).then(res => {
+            if (res.code === 1) {
+                this.props.history.push('/profileupload');
+            } else {
+                this.$toast(res.msg);
+            }
+        }).catch(e => {
+            console.log(e.message);
+            this.$toast("提交失败");
         })
         // this.props.history.push('/profileupload');
     }
@@ -48,68 +59,51 @@ class ApplyInfo extends Base {
     render() {
         // 学历列表
         const educationList = [{
-            value: 0,
+            value: "硕士以上",
             label: "硕士以上"
         }, {
-            value: 1,
+            value: "本科",
             label: "本科"
         }, {
-            value: 2,
+            value: "大专",
             label: "大专"
         }, {
-            value: 3,
+            value: "高中",
             label: "高中"
         }, {
-            value: 4,
+            value: "初中",
             label: "初中"
         }, {
-            value: 5,
+            value: "小学以下",
             label: "小学以下"
         }];
         // 婚姻状况列表
         const marriageList = [{
-            value: 0,
+            value: "是",
             label: "已婚"
         }, {
-            value: 1,
+            value: "否",
             label: "未婚"
         }];
         // 企业年度营收规模列表
         const incomeList = [{
-            value: 0,
+            value: "小于200万（含）",
             label: "小于200万（含）"
         }, {
-            value: 1,
+            value: "200万-500万（含）",
             label: "200万-500万（含）"
         }, {
-            value: 2,
+            value: "500万-1000万（含）",
             label: "500万-1000万（含）"
         }, {
-            value: 3,
+            value: "1000万-2000万（含）",
             label: "1000万-2000万（含）"
         }, {
-            value: 4,
+            value: "2000万-5000万（含）",
             label: "2000万-5000万（含）"
         }, {
-            value: 5,
+            value: "5000万以上",
             label: "5000万以上"
-        }];
-        // 企业成立时间
-        const startTimeList = [{
-            value: 0,
-            label: "15年及以上"
-        }, {
-            value: 1,
-            label: "10年-15年"
-        }, {
-            value: 2,
-            label: "5年-10年"
-        }, {
-            value: 3,
-            label: "3年-5年"
-        }, {
-            value: 4,
-            label: "3年以内"
         }];
       	return (
         	<ApplyContainer>
@@ -137,7 +131,6 @@ class ApplyInfo extends Base {
                         cols={1}
                         value={this.state.educationVal}
                         onOk={v => this.setState({ educationVal: v })}
-                        onChange={v => this.setState({ userName: v })}
                         ><List.Item arrow="horizontal">选择学历</List.Item>
                     </Picker>
                     <Picker 
@@ -219,40 +212,25 @@ class ApplyInfo extends Base {
                         onOk={v => this.setState({ incomeVal: v })}>
                         <List.Item arrow="horizontal">企业年度营收规模：</List.Item>
                     </Picker>
-                    <Picker 
-                        data={ startTimeList }
-                        title="企业成立时间"
-                        cols={1}
-                        value={this.state.startTimeVal}
-                        onOk={v => this.setState({ startTimeVal: v })}>
-                        <List.Item arrow="horizontal">企业成立时间：</List.Item>
-                    </Picker>
                 </List>
                 <WhiteSpace/>
                 <WhiteSpace/>
                 <WingBlank>
                     <Button 
                         className="apply_btn"
-                        disabled={  !this.state.phoneNum &&
-                                    !this.state.verifyCode &&
-                                    !this.state.userName &&
-                                    !this.state.userCardCode &&
-                                    !this.state.educationVal &&
-                                    !this.state.marriageVal &&
-                                    !this.state.contactOneName &&
-                                    !this.state.contactOneTel &&
-                                    !this.state.relationOne &&
-                                    !this.state.contactTwoName &&
-                                    !this.state.contactTwoTel &&
-                                    !this.state.relationTwo &&
-                                    !this.state.companyName &&
-                                    !this.state.companyAddress &&
-                                    !this.state.incomeVal &&
-                                    !this.state.startTimeVal
-                                }
-                        onClick={() => {
-                            this.applyAction.bind(this);
-                    }}>下一步</Button>
+                        disabled={
+                            !this.state.userName ||
+                            !this.state.userCardCode ||
+                            !this.state.educationVal ||
+                            !this.state.marriageVal ||
+                            !this.state.companyName ||
+                            !this.state.companyAddress ||
+                            !this.state.incomeVal ||
+                            !this.state.contactOneName ||
+                            !this.state.contactOneTel ||
+                            !this.state.relationOne
+                        }
+                        onClick={this.applyAction.bind(this)}>下一步</Button>
                 </WingBlank>
                 <WhiteSpace/>
                 <WhiteSpace/>

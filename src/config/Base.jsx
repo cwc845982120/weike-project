@@ -25,6 +25,7 @@ export default class Base extends React.Component {
                 resolve(res);
             })
             .catch(e => {
+                console.log(e.message);
                 // 关闭Loading
                 Toast.hide();
                 Toast.offline("网络开小差...", 1, () => {}, true);
@@ -35,15 +36,21 @@ export default class Base extends React.Component {
 
     // 单个文件上传
     uploadFile(url, file){
-        const formData = new FormData();
-        formData.append('img', file, file.name);
+        // 开启Loading
+        Toast.loading("加载中...", 0, () => {}, true);
+        let formData = new FormData();
+        formData.append('file', file);
         return new Promise( (resolve, reject) => {
             axios.post(url, formData, {
-                headers:{'Content-Type': 'multipart/form-data'}
+                headers: {'Content-Type': 'multipart/form-data'}
             }).then( res => {
+                // 关闭Loading
+                Toast.hide();
                 resolve(res);
             })
             .catch(e => {
+                // 关闭Loading
+                Toast.hide();
                 console.log(e.message);
                 resolve(e);
             })

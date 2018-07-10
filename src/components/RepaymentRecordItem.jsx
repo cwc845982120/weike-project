@@ -11,16 +11,12 @@ class RepaymentRecordItem extends Base {
       	return (
         	<RepaymentRecordItemContainer>
                 <Item 
-                    arrow="horizontal" 
-                    onClick={this.props.action}
-                    extra="自动还款"
+                    extra="主动还款"
                     >
                     还款记录300.00 <Brief>2018年6月10日  第2-1/6期</Brief>
                 </Item>
                 <Item 
-                    arrow="horizontal" 
-                    onClick={this.props.action}
-                    extra="自动还款"
+                    extra="主动还款"
                     >
                     还款记录300.00 <Brief>2018年6月10日  第2-1/6期</Brief>
                 </Item>

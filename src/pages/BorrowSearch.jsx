@@ -43,7 +43,7 @@ class BorrowSearch extends Base {
     }
 
     repay() {
-        // TODO
+        this.props.history.push('repayonce');
     }
 
     loadMore(event) {

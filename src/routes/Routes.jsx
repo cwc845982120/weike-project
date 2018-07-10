@@ -9,7 +9,6 @@ import CertificationCenter from '../pages/CertificationCenter'
 import ShowLimit from '../pages/ShowLimit'
 import GetLoans from '../pages/GetLoans'
 import BorrowSearch from '../pages/BorrowSearch'
-import RepaymentDetail from '../pages/RepaymentDetail'
 import SeeAgreements from '../pages/SeeAgreements'
 import SubmitSuccess from '../pages/SubmitSuccess'
 import FaceSubmitSuccess from '../pages/FaceSubmitSuccess'
@@ -17,6 +16,7 @@ import FaceCheckFail from '../pages/FaceCheckFail'
 import FaceCheck from '../pages/FaceCheck'
 import ProfileUpload from '../pages/ProfileUpload'
 import MyLoan from '../pages/MyLoan'
+import RepayOnce from '../pages/RepayOnce'
 import NotFound from '../pages/NotFound'
 
 // 如果你的Home，Topics， Jobs是互斥的，那还要加上Switch
@@ -42,8 +42,6 @@ class Routes extends React.Component {
 					<Route path={"/seeagreements"} component={ SeeAgreements }/>
 					{ /** 借还查询页 */ }
 					<Route path={"/borrowsearch"} component={ BorrowSearch }/>
-					{ /** 还款详情页 */ }
-					<Route path={"/repaymentdetail"} component={ RepaymentDetail }/>
 					{ /** 获取贷款页 */ }
 					<Route path={"/getloans"} component={ GetLoans }/>
 					{ /** 身份信息提交成功页 */ }
@@ -58,6 +56,8 @@ class Routes extends React.Component {
 					<Route path={"/profileupload"} component={ ProfileUpload }/>
 					{ /** 我的贷款页 */ }
 					<Route path={"/myloan"} component={ MyLoan }/>
+					{ /** 立即还款页 */ }
+					<Route path={"/repayonce"} component={ RepayOnce }/>
 					{ /** 404页 */ }
 					<Route component={ NotFound } />
 				</Switch>

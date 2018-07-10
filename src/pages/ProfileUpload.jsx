@@ -2,7 +2,7 @@ import React from 'react'
 import Base from '../config/Base'
 import styled from 'styled-components'
 
-import { ActionSheet, WhiteSpace, WingBlank, Button, Toast } from 'antd-mobile'
+import { ActionSheet, WhiteSpace, WingBlank, Button } from 'antd-mobile'
 
 import CertCardUpload from '../components/CertCardUpload'
 
@@ -25,6 +25,11 @@ class ProfileUpload extends Base  {
     fontUpload(e) {
         // TODO
         let file = e.target.files[0];
+        let size = file.size;
+        if (size > 2048000) {
+            this.$toast("请上传小于2M的照片");
+            return;
+        }
         const reads = new FileReader();
         reads.readAsDataURL(file);
         reads.onload = e => {
@@ -39,6 +44,11 @@ class ProfileUpload extends Base  {
     backUpload(e) {
         // TODO
         let file = e.target.files[0];
+        let size = file.size;
+        if (size > 2048000) {
+            this.$toast("请上传小于2M的照片");
+            return;
+        }
         const reads = new FileReader();
         reads.readAsDataURL(file);
         reads.onload = e => {
@@ -50,22 +60,22 @@ class ProfileUpload extends Base  {
     }
 
     submitInfo() {
-        Toast.loading("上传中...", 0);
-        // 照片上传
-        new Promise((resolve, reject) => {
-            // TODO
-        }).then(() => {
-            // TODO
+        this.uploadFile("/api/getOCRAuthen", this.state.fontImgFile)
+        .then(res => {
+            if (res.code === 1) {
+                this.props.history.push('/facecheck');
+            } else {
+                this.$toast(res.msg);
+            }
         }).catch(e => {
-            Toast.hide();
             console.log(e.message);
-            this.showToast('身份信息上传失败');
+            this.$toast('上传失败');
         })
     }
 
     // 跳转合同条款
     toAgreement() {
-        this.props.history.push('/submitsuccess');
+        this.props.history.push('/seeagreements');
     }
 
     render() {

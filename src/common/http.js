@@ -1,15 +1,16 @@
 import axios from 'axios';
+const querystring = require('querystring');
 
-let mode = process.env.NODE_ENV === 'production' ? 2 : 1; // 0:本地 1:生产;
+let mode = process.env.NODE_ENV === 'production' ? 1 : 0; // 0:本地 1:生产;
 
 // axios 配置
 axios.defaults.timeout = 10000;
 axios.defaults.headers = {
-	'Content-Type': 'application/json;charset=utf-8'
+	"Content-Type": "application/x-www-form-urlencoded;charset=UTF-8"
 };
 
 if (mode === 0) {
-	axios.defaults.baseURL = 'http://192.168.1.8:8080';
+	axios.defaults.baseURL = 'http://192.168.0.102:8080';
 } else if (mode === 1) {
 	axios.defaults.baseURL = 'https://mock.caowencheng.cn/mock'; // 生产
 }
@@ -17,6 +18,11 @@ if (mode === 0) {
 // http request 拦截器
 axios.interceptors.request.use(
 	config => {
+		if (config.headers["Content-Type"] === "application/x-www-form-urlencoded;charset=UTF-8") {
+			config.transformRequest = data => {
+				return querystring.stringify(data);
+			};
+		}
 		return config;
 	},
 	error => {
@@ -29,6 +35,7 @@ axios.interceptors.response.use(
 		return response.data;
 	},
 	error => {
+		console.log(error);
 		let errResult = {
 			code: -1,
 			msg: '连接服务器失败'
