@@ -1,6 +1,5 @@
 import React from 'react'
 import Base from '../config/Base'
-import { getQueryString } from '../common/utils'
 import styled from 'styled-components'
 import { WhiteSpace, WingBlank } from 'antd-mobile'
 import HomeButton from '../components/HomeButton'

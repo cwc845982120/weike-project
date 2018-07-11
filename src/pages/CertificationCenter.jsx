@@ -3,7 +3,7 @@ import Base from '../config/Base'
 import styled from 'styled-components'
 import { WhiteSpace, WingBlank, Button } from 'antd-mobile'
 
-import CompanySearch from '../components/CompanySearch'
+// import CompanySearch from '../components/CompanySearch'
 
 class CertificationCenter extends Base {
 
