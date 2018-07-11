@@ -27,7 +27,7 @@ class Routes extends React.Component {
 			<Router>
 				<Switch>
 					{ /** 默认跳转home页 */ }
-					<Route exact path="/" render={() => (<Redirect to="/certificationcenter"/>)} />
+					<Route exact path="/" render={() => (<Redirect to="/home"/>)} />
 					{ /** 首页 */ }
 					<Route path={"/home"} component={ HomePage }/>
 					{ /** 认证中心页 */ }
