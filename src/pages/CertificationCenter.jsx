@@ -18,9 +18,9 @@ class CertificationCenter extends Base {
     render() {
       	return (
         	<CertificationContainer>
-                <div className="search_wrapper">
+                { /**<div className="search_wrapper">
                     <CompanySearch />
-                </div>
+                </div> */}
 				<img src={require('../static/img/certification_bg.png')} alt="认证" className="bg" />
                 <WhiteSpace/>
                 <WingBlank>

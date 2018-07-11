@@ -1,95 +1,88 @@
 import React from 'react'
 import Base from '../config/Base'
 import styled from 'styled-components'
-import { Tabs, ListView, WhiteSpace, List, Button } from 'antd-mobile'
-
+import { Tabs, WhiteSpace, List, Button } from 'antd-mobile'
+import moment from 'moment'
 import NoResult from '../components/NoResult.jsx'
 import RepaymentRecordItem from '../components/RepaymentRecordItem'
+import { getForeverStorage, getQueryString } from '../common/utils'
+import { Modal } from 'antd-mobile'
 
+const alert = Modal.alert;
 const Item = List.Item;
 
 class BorrowSearch extends Base {
     constructor() {
         super();
-        const BorrowRecordList = new ListView.DataSource({
-            rowHasChanged: (row1, row2) => row1 !== row2
-        });
-        const RepaymentRecordList = new ListView.DataSource({
-            rowHasChanged: (row1, row2) => row1 !== row2
-        });
         this.state = {
-            refreshing: true,
-            down: true,
-            borrowRecordArr: [{}],
-            repaymentRecordArr: [{}],
-            BorrowRecordList,
-            RepaymentRecordList,
-            isLoading: true,
-            hasMore: true,
-            height: 0,
-            currentPage: 1,
-            pageSize: 5
+            repaymentRecordArr: [],
+            repaymentDetail: {}
         };
     }
 
     componentDidMount() {
         this.setTitle('借还查询');
-        this.setState({
-            height: (document.body.scrollHeight - 43.5),
-            BorrowRecordList: this.state.BorrowRecordList.cloneWithRows(this.state.borrowRecordArr),
-            RepaymentRecordList: this.state.RepaymentRecordList.cloneWithRows(this.state.repaymentRecordArr),
-            isLoading: false
-        });
+        this.renderRepaymentRecord();
     }
 
     repay() {
-        this.props.history.push('repayonce');
-    }
-
-    loadMore(event) {
-        if (this.state.isLoading && !this.state.hasMore) {
-            return;
-        }
-        console.log('loadMore');
+        this.props.history.push(`/repayonce?id=${getQueryString('id')}`);
     }
 
     toDetail(id) {
         this.props.history.push(`/repaymentdetail?id=${id}`);
     }
 
+    renderRepayDetail() {
+        this.getResponse('/api/getLoanRecordDetails', {
+            id: getQueryString('id')
+        }).then(res => {
+            if (res.code === 1) {
+                this.setState({
+                    repaymentDetail: res.data
+                })
+            } else {
+                this.$toast(res.msg);
+            }
+        }).catch(e => {
+            console.log(e.message);
+            this.$toast("查询借款详情失败");
+        })
+    }
+
     renderBorrowRecord() {
         return (
             <div>
                 <List>
-                    <Item extra={'兴业消费-小鲨消费'}>交易类型</Item>
-                    <Item extra={'yx1237777'}>合同号</Item>
+                    <Item extra={this.state.repaymentDetail.purpose}>交易类型</Item>
+                    <Item extra={this.state.repaymentDetail.contractId}>合同号</Item>
                     <div className="btn_wrapper">
                         <Button type="primary" inline size="small" style={{ background: '#ff7700' }} onClick={this.repay.bind(this)}>立即还款</Button>
                     </div>
                 </List>
                 <WhiteSpace/>
                 <List>
-                    <Item extra={'兴业消费-小鲨消费'}>状态</Item>
-                    <Item extra={'兴业消费-小鲨消费'}>申请人</Item>
-                    <Item extra={'兴业消费-小鲨消费'}>申请日期</Item>
-                    <Item extra={'兴业消费-小鲨消费'}>申请金额</Item>
-                    <Item extra={'兴业消费-小鲨消费'}>实际放贷金额</Item>
-                    <Item extra={'兴业消费-小鲨消费'}>实际到账金额</Item>
-                    <Item extra={'兴业消费-小鲨消费'}>剩余还款金额</Item>
+                    <Item extra={this.state.repaymentDetail.isOk ? "已结清" : "待还款"}>状态</Item>
+                    <Item extra={this.state.repaymentDetail.appName}>申请人</Item>
+                    <Item extra={moment(this.state.repaymentDetail.createTime).format("YYYY年MM月DD日")}>申请日期</Item>
+                    <Item extra={`${this.state.repaymentDetail.tranAmt || 0}元`}>申请金额</Item>
+                    <Item extra={`${this.state.repaymentDetail.tranAmtSuccess || 0}元`}>实际放贷金额</Item>
+                    <Item extra={`${this.state.repaymentDetail.tranAmtReceive || 0}元`}>实际到账金额</Item>
+                    <Item extra={`${this.state.repaymentDetail.dhmoney || 0}元`}>剩余还款金额</Item>
                 </List>
                 <WhiteSpace/>
                 <List>
                     <Item>恢复正常金额</Item>
-                    <Item extra={'兴业消费-小鲨消费'}>总分期数</Item>
-                    <Item extra={'兴业消费-小鲨消费'}>本期期数</Item>
-                    <Item extra={'兴业消费-小鲨消费'}>到账还款日</Item>
-                    <Item extra={'兴业消费-小鲨消费'}>签约账户</Item>
+                    <Item extra={this.state.repaymentDetail.period}>总分期数</Item>
+                    <Item extra={this.state.repaymentDetail.periodCurrent}>本期期数</Item>
+                    <Item extra={moment(this.state.repaymentDetail.shouldRepayDate).format("YYYY年MM月DD日")}>到账还款日</Item>
+                    <Item extra={this.state.repaymentDetail.tranBankAccount}>签约账户</Item>
                 </List>
                 <WhiteSpace/>
                 <List>
-                    <Item extra={'兴业消费-小鲨消费'}>本期已还金额</Item>
-                    <Item extra={'兴业消费-小鲨消费'}>本期待还金额</Item>
-                    <div className="tip">包含本金1388.99元，利息60元（红包已抵扣60/期）</div>
+                    <Item extra={`${this.state.repaymentDetail.repayMoney || 0}元`}>本期已还金额</Item>
+                    <Item extra={`${this.state.repaymentDetail.remainderMoney || 0}元`}>本期待还金额</Item>
+                    {/** <div className="tips">包含本金1388.99元，利息60元（红包已抵扣60/期）</div> */}
                 </List>
                 <WhiteSpace/>
                 <WhiteSpace/>
@@ -98,32 +91,32 @@ class BorrowSearch extends Base {
     }
 
     renderRepaymentRecord() {
-        if (this.state.repaymentRecordArr.length) {
-            return (
-                <ListView
-                    ref={el => this.lv = el}
-                    dataSource={this.state.RepaymentRecordList}
-                    renderFooter={() => (
-                        <div style={{ padding: 5, textAlign: 'center' }}>
-                            {this.state.isLoading ? '加载中...' : '没有更多数据啦~~~'}
-                        </div>
-                    )}
-                    renderRow={(item) => <RepaymentRecordItem
-                        data={{id: 1}}
-                        action={this.toDetail.bind(this, 1)}
-                    />}
-                    style={{
-                        height: this.state.height,
-                        overflow: 'auto',
-                    }}
-                    pageSize={this.state.pageSize}
-                    scrollRenderAheadDistance={500}
-                    onEndReached={this.loadMore.bind(this)}
-                    onEndReachedThreshold={10}
-                />
-            )
+        let uid = getForeverStorage("userInfo") ? getForeverStorage("userInfo").id : "";
+        if (!uid) {
+            alert('提示', '未检测到您的认证信息，请重新认证', [
+                { text: '取消', onPress: () => console.log('cancel'), style: 'default' },
+                { text: '重新认证', onPress: () => {
+                    this.props.history.push('/certificationcenter');
+                } }
+            ]);
+            return;
         }
-        return <NoResult/>
+        this.getResponse('/api/getRepaymentList', {
+            uid
+        }).then(res => {
+            if (res.code === 1) {
+                this.setState({
+                    repaymentRecordArr: res.data
+                })
+                // 获取详情信息
+                this.renderRepayDetail();
+            } else {
+                this.$toast(res.msg);
+            }
+        }).catch(e => {
+            console.log(e.message);
+            this.$toast("获取贷款信息失败");
+        })
     }
 
     render() {
@@ -131,6 +124,16 @@ class BorrowSearch extends Base {
             { title: '借款明细' },
             { title: '还款记录' }
         ];
+        let repaymentRecordList;
+        if (this.state.repaymentRecordArr.length) {
+            repaymentRecordList = this.state.repaymentRecordArr.map(item => {
+                return (
+                    <RepaymentRecordItem data={item} key={item.id}/>
+                )
+            })
+        } else {
+            repaymentRecordList = (<NoResult/>);
+        }
       	return (
         	<BorrowSearchContainer>
                 <Tabs tabs={tabs}
@@ -145,7 +148,7 @@ class BorrowSearch extends Base {
                     </BorrowRecord>
                     {/** 还款记录 */}
                     <RepaymentRecord>
-                        {this.renderRepaymentRecord()}
+                        {repaymentRecordList}
                     </RepaymentRecord>
                 </Tabs>
             </BorrowSearchContainer>
@@ -169,7 +172,7 @@ const BorrowSearchContainer = styled.div`
             float: right;
         }
     }
-    .tip{
+    .tips{
         color: #4A4A4A;
         font-size: 1.2rem;
         padding: 1rem 15px;

@@ -4,6 +4,7 @@ import { getQueryString } from '../common/utils'
 import styled from 'styled-components'
 import { WhiteSpace, WingBlank } from 'antd-mobile'
 import HomeButton from '../components/HomeButton'
+import { getForeverStorage } from '../common/utils'
 
 class HomePage extends Base {
 	constructor(props) {
@@ -13,9 +14,10 @@ class HomePage extends Base {
 
 	componentDidMount() {
 		this.setTitle('微科');
-		// 用户同意授权，获取code
-		const code = getQueryString('code');
-		console.log(code);
+		let uid = getForeverStorage("userInfo") ? getForeverStorage("userInfo").id : "";
+		if (!uid) {
+			this.props.history.replace('/certificationcenter');
+		}
 	}
 
     render() {
@@ -51,7 +53,7 @@ class HomePage extends Base {
 							activeIcon={require("../static/img/person_icon_active.png")}
 							title="我的贷款"
 							action={ () => {
-								this.props.history.push('/borrowsearch');
+								this.props.history.push('/myloan');
 						}}/>
 					</WingBlank>
 				</div>

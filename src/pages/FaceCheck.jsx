@@ -4,14 +4,26 @@ import styled from 'styled-components'
 import { Button, WingBlank, WhiteSpace } from 'antd-mobile'
 
 class FaceCheck extends Base  {
+    constructor() {
+        super();
+        this.state = {
+            faceToken: ''
+        }
+    }
 
     componentDidMount() {
         this.setTitle('人脸识别');
+        this.getResponse('/api/getLiteGetToken',{}).then(res => {
+            if (res.code === 1) {
+                this.setState({
+                    faceToken: res.data.token
+                })
+            }
+        })
     }
 
     toCheckFace() {
-        window.location.href = "https://api.megvii.com/faceid/lite/do?token=a5455e86ba14e2edd085420854772b7d"
-        
+        window.location.href = `https://api.megvii.com/faceid/lite/do?token=${this.state.faceToken}`
     }
 
     render() {

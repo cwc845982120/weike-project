@@ -1,24 +1,62 @@
 import React from 'react'
 import Base from '../config/Base'
 import styled from 'styled-components'
-import { WhiteSpace, WingBlank, Button, Slider } from 'antd-mobile'
+import { WhiteSpace, WingBlank, Button, Slider, Modal } from 'antd-mobile'
+import { getForeverStorage } from '../common/utils'
+
+const alert = Modal.alert;
 
 class ShowLimit extends Base {
     constructor() {
         super();
         this.state = {
+            userUseAmt: 0,
+            allLimit: 0,
             isHasLimit: true,
-            percent: 80
+            percent: 0
         }
     }
 
     componentDidMount() {
         this.setTitle('额度查看');
+        let uid = getForeverStorage("userInfo") ? getForeverStorage("userInfo").id : "";
+        if (!uid) {
+            alert('提示', '未检测到您的认证信息，请重新认证', [
+                { text: '取消', onPress: () => console.log('cancel'), style: 'default' },
+                { text: '重新认证', onPress: () => {
+                    this.props.history.push('/certificationcenter');
+                } }
+            ]);
+            return;
+        }
+        this.getResponse('/api/getUserInfo', {
+            uid 
+        }).then(res => {
+            if (res.code === 1) {
+                if (res.data.credit_limit === 0){
+                    this.setState({
+                        isHasLimit: false
+                    })
+                    return;
+                }
+                this.setState({
+                    userUseAmt: res.data.userUseAmt,
+                    allLimit: res.data.credit_limit,
+                    percent: ~~(res.data.userUseAmt * 100 / res.data.credit_limit)
+                })
+            } else {
+                this.$toast(res.msg);
+            }
+        }).catch(e => {
+            console.log(e.message);
+            this.$toast('获取用户额度失败');
+        })
     }
 
     // 获取贷款
     getLimit() {
-        this.props.history.push('/getloans');
+        let canUseLimit = ~~(this.state.allLimit - this.state.userUseAmt);
+        this.props.history.push(`/getloans?canUseLimit=${canUseLimit}`);
     }
 
     render() {
@@ -37,7 +75,7 @@ class ShowLimit extends Base {
                     <img src={require('../static/img/has_limit.png')} alt="icon" />
                     <div className="title">可用额度</div>
                     <div className="money">
-                        ￥<span className="val">5,500</span>
+                        ￥<span className="val">{ ~~(this.state.allLimit - this.state.userUseAmt) }</span>
                     </div>
                 </div>
                 <WhiteSpace/>
@@ -46,18 +84,18 @@ class ShowLimit extends Base {
                         <div className="block left">
                             <div className="subtitle">已用额度</div>
                             <div className="money">
-                                ￥<span className="val">10,000</span>
+                                ￥<span className="val">{ this.state.userUseAmt }</span>
                             </div>
                         </div>
                         <div className="block right">
                             <div className="subtitle">总额度</div>
                             <div className="money">
-                                ￥<span className="val">5,500</span>
+                                ￥<span className="val">{ this.state.allLimit }</span>
                             </div>
                         </div>
                     </div>
                     <Slider
-                        defaultValue={this.state.percent}
+                        value={this.state.percent}
                         min={0}
                         max={100}
                         trackStyle={{

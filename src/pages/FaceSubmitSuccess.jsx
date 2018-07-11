@@ -22,9 +22,9 @@ class SubmitSuccess extends Base {
                         <Button 
                             className="btn"
                             onClick={() => {
-                                this.props.history.push('/profileupload');
+                                this.props.history.push('/home');
                             }}
-                            >下一步</Button>
+                            >回到首页</Button>
                     </WingBlank>
                 </BtnContainer>
             </ApplySuccessContainer>

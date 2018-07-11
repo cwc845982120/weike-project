@@ -4,13 +4,13 @@ const querystring = require('querystring');
 let mode = process.env.NODE_ENV === 'production' ? 1 : 0; // 0:本地 1:生产;
 
 // axios 配置
-axios.defaults.timeout = 10000;
+axios.defaults.timeout = 30000;
 axios.defaults.headers = {
 	"Content-Type": "application/x-www-form-urlencoded;charset=UTF-8"
 };
 
 if (mode === 0) {
-	axios.defaults.baseURL = 'http://192.168.0.102:8080';
+	axios.defaults.baseURL = 'http://192.168.0.105:8080';
 } else if (mode === 1) {
 	axios.defaults.baseURL = 'https://mock.caowencheng.cn/mock'; // 生产
 }

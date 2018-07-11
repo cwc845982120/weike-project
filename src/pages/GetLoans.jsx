@@ -1,7 +1,10 @@
 import React from 'react'
 import Base from '../config/Base'
 import styled from 'styled-components'
-import { WhiteSpace, WingBlank, Button, Slider, List, Picker } from 'antd-mobile'
+import { WhiteSpace, WingBlank, Button, Slider, List, Picker, Modal } from 'antd-mobile'
+import { getQueryString, getForeverStorage } from '../common/utils'
+
+const alert = Modal.alert;
 
 class GetLoans extends Base {
     constructor() {
@@ -10,28 +13,77 @@ class GetLoans extends Base {
             percent: 0,
             timeVal: '',
             todoVal: '',
-            moneyVal: '1,000'
+            moneyNum: 1000,
+            moneyVal: '1,000',
+            canUseLimitNum: 1000,
+            canUseLimitStr: '1,000'
         }
     }
 
     componentDidMount() {
         this.setTitle('获取一笔贷款');
-        setTimeout(() => {
-            this.props.history.push('/seeagreements');
-        }, 3000)
+        let canUseLimit = getQueryString('canUseLimit');
+        let canUseLimitStr, canUseLimitNum;
+        if (canUseLimit) {
+            canUseLimitNum = ~~canUseLimit;
+            canUseLimitStr = canUseLimit.replace(/(\d)(?=(?:\d{3})+$)/g,'$1,');
+        } else {
+            canUseLimitNum = 1000;
+            canUseLimitStr = '1,000';
+        }
+        this.setState({
+            canUseLimitNum,
+            canUseLimitStr
+        })
     }
 
     sliderChange(val) {
-        let moneyValStr = (~~(val  * 1000)).toFixed(0);
-        let moneyFormatStr = moneyValStr.replace(/(\d)(?=(?:\d{3})+$)/g,'$1,');
+        let moneyValStr = (~~(val * 1000)).toFixed(0);
+        let moneyFormatStr = moneyValStr;
         this.setState({
+            moneyNum: (~~(val * 1000)),
             moneyVal: moneyFormatStr
+        })
+    }
+
+    getLoans() {
+        let uid = getForeverStorage("userInfo") ? getForeverStorage("userInfo").id : "";
+        if (!uid) {
+            alert('提示', '未检测到您的认证信息，请重新认证', [
+                { text: '取消', onPress: () => console.log('cancel'), style: 'default' },
+                { text: '重新认证', onPress: () => {
+                    this.props.history.push('/certificationcenter');
+                } }
+            ]);
+            return;
+        }
+        if (!this.state.timeVal) {
+            this.$toast('请选择一个期限');
+            return;
+        } else if (!this.state.todoVal) {
+            this.$toast('请选择贷款用途');
+            return;
+        }
+        this.getResponse('/api/putForwardApply', {
+            uid,
+            tranAmt: this.state.moneyNum,
+            period: this.state.timeVal,
+            purpose: this.state.todoVal
+        }).then(res => {
+            if (res.code === 1) {
+                this.props.history.push('/applyreceived');
+            } else {
+                this.$toast(res.msg);
+            }
+        }).catch(e => {
+            console.log(e.message);
+            this.$toast('获取贷款失败');
         })
     }
 
     // 跳转合同条款
     toAgreement() {
-        this.props.history.push('/applyreceived');
+        this.props.history.push('/seeagreements');
     }
 
     render() {
@@ -40,24 +92,24 @@ class GetLoans extends Base {
             value: 0,
             label: "随还产品"
         }, {
-            value: 1,
+            value: 3,
             label: "3个月分期"
         }, {
-            value: 2,
+            value: 6,
             label: "6个月分期"
         }]
         // 贷款用途
         const todoList = [{
-            value: 0,
+            value: "流动资金周转",
             label: "流动资金周转"
         }, {
-            value: 1,
+            value: "购置或更新经营设备",
             label: "购置或更新经营设备"
         }, {
-            value: 2,
+            value: "支付租赁经营场所租金",
             label: "支付租赁经营场所租金"
         }, {
-            value: 3,
+            value: "商用房装修",
             label: "商用房装修"
         }]
       	return (
@@ -79,7 +131,7 @@ class GetLoans extends Base {
                             style={{ marginLeft: 30, marginRight: 30 }}
                             defaultValue={this.state.percent}
                             min={1}
-                            max={30}
+                            max={this.state.canUseLimitNum / 1000}
                             trackStyle={{
                                 backgroundColor: '#f5b723',
                                 height: '10px',
@@ -103,7 +155,7 @@ class GetLoans extends Base {
                                 <div className="money">￥1,000</div>
                             </div>
                             <div className="block right">
-                                <div className="money">￥30,000</div>
+                                <div className="money">￥{ this.state.canUseLimitStr }</div>
                             </div>
                         </div>
                     </WingBlank>
@@ -130,9 +182,7 @@ class GetLoans extends Base {
                 </List>
                 <div className="footer">
                     <WingBlank>
-                        <Button className="btn" onClick={() => {
-                            this.props.history.push('/applyreceived');
-                        }}>提交获取贷款</Button>
+                        <Button className="btn" onClick={this.getLoans.bind(this)}>提交获取贷款</Button>
                     </WingBlank>
                     <WhiteSpace/>
                     <WingBlank>

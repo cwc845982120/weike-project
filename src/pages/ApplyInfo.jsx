@@ -2,6 +2,7 @@ import React from 'react'
 import Base from '../config/Base'
 import styled from 'styled-components'
 import { List, Button, Picker, WingBlank, InputItem, WhiteSpace } from 'antd-mobile'
+import { setForeverStorage } from '../common/utils'
 
 class ApplyInfo extends Base {
 	constructor(props) {
@@ -45,7 +46,8 @@ class ApplyInfo extends Base {
             appBusinessScale: this.state.incomeVal[0] // 企业年度营收规模
         }).then(res => {
             if (res.code === 1) {
-                this.props.history.push('/profileupload');
+                setForeverStorage('userInfo', res.data);
+                this.props.history.replace('/profileupload');
             } else {
                 this.$toast(res.msg);
             }
@@ -162,7 +164,7 @@ class ApplyInfo extends Base {
                         placeholder="请输入"
                         moneyKeyboardAlign="right"
                         className="right_input"
-                        onChange={v => this.setState({ contactTwoTel: v })}
+                        onChange={v => this.setState({ relationOne: v })}
                     >关系：</InputItem>
                 </List>
                 <List renderHeader={() => '紧急联系人2'}>

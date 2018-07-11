@@ -26,7 +26,7 @@ class FaceCheckFail extends Base {
                         <Button
                             className="recheck"
                             onClick={ () => {
-                                this.props.history.push('/faceupload');
+                                this.props.history.push('/facecheck');
                             }}
                         >重新认证</Button>
                     </WingBlank>

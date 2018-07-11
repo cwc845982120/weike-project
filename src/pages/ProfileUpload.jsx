@@ -63,7 +63,7 @@ class ProfileUpload extends Base  {
         this.uploadFile("/api/getOCRAuthen", this.state.fontImgFile)
         .then(res => {
             if (res.code === 1) {
-                this.props.history.push('/facecheck');
+                this.props.history.replace('/facecheck');
             } else {
                 this.$toast(res.msg);
             }

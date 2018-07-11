@@ -23,6 +23,19 @@ export function setStorage(key, val, expireTime = 2) {
 	}
 }
 
+// 存储信息至localStorage 永久有效
+export function setForeverStorage(key, val) {
+	if (window.localStorage) {
+		if (typeof val === 'object' && !(val instanceof Array)) {
+			let valStr = JSON.stringify(val);
+			window.localStorage.setItem(key, valStr);
+			return;
+		} else {
+			throw new Error('请存储Object类型数据');
+		}
+	}
+}
+
 // 从localStorage获取数据 过期删除
 export function getStorage(key) {
 	if (window.localStorage) {
@@ -33,6 +46,19 @@ export function getStorage(key) {
 			return obj;
 		} else {
 			window.localStorage.removeItem(key);
+			return null;
+		}
+	}
+}
+
+// 从localStorage获取永久数据
+export function getForeverStorage(key) {
+	if (window.localStorage) {
+		let objStr = window.localStorage.getItem(key);
+		let obj = JSON.parse(objStr);
+		if (obj) {
+			return obj;
+		} else {
 			return null;
 		}
 	}

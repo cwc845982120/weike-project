@@ -2,31 +2,59 @@ import React from 'react'
 import Base from '../config/Base'
 import styled from 'styled-components'
 import { WhiteSpace } from 'antd-mobile'
+import { getQueryString } from '../common/utils'
 
 class RepayOnce extends Base {
+    constructor() {
+        super();
+        this.state = {
+            repaymentDetail: {}
+        };
+    }
 
 	componentDidMount() {
         this.setTitle('立即还款');
+        this.getResponse('/api/getLoanRecordDetails', {
+            id: getQueryString('id')
+        }).then(res => {
+            if (res.code === 1) {
+                this.setState({
+                    repaymentDetail: res.data
+                })
+            } else {
+                this.$toast(res.msg);
+            }
+        }).catch(e => {
+            console.log(e.message);
+            this.$toast("查询借款详情失败");
+        })
     }
 
 	render() {
+        let repayStatus;
+        if (this.state.repaymentDetail.repayCode === 0) {
+            repayStatus = "还款中";
+        } else if (this.state.repaymentDetail.repayCode === 1) {
+            repayStatus = "还款成功";
+        } else if (this.state.repaymentDetail.repayCode === 2) {
+            repayStatus = "待还款";
+        }
 		return (
 			<RepayOnceContainer>
                 <WhiteSpace/>
                 <div className="block_list">
                     <div className="item">
                         <div className="title">合同号：</div>
-                        <div className="val">7321897</div>
-                        <div className="state">还款中</div>
+                        <div className="val">{this.state.repaymentDetail.contractId}</div>
+                        <div className="state">{repayStatus}</div>
                     </div>
                     <div className="item">
                         <div className="title">当期应还：</div>
-                        <div className="val">3999元</div>
+                        <div className="val">{this.state.repaymentDetail.periodRepayMoney || 0}元</div>
                     </div>
                     <div className="item">
                         <div className="title">结清应还：</div>
-                        <div className="title">结清应还：</div>
-                        <div className="val">7321897</div>
+                        <div className="val">{this.state.repaymentDetail.dhmoney || 0}元</div>
                     </div>
                 </div>
                 <WhiteSpace/>
@@ -34,15 +62,15 @@ class RepayOnce extends Base {
                     <div className="tip">请通过您的借款“企业名称”账户还款至以下账户：</div>
                     <div className="item">
                         <div className="title">公司名：</div>
-                        <div className="val">鑫宝公司</div>
+                        <div className="val">{this.state.repaymentDetail.repayCompay}</div>
                     </div>
                     <div className="item">
                         <div className="title">账户信息：</div>
-                        <div className="val">信息信息使用！</div>
+                        <div className="val">{this.state.repaymentDetail.repayBank}</div>
                     </div>
                     <div className="item">
                         <div className="title">账号：</div>
-                        <div className="val">237894789273284</div>
+                        <div className="val">{this.state.repaymentDetail.tranBankAccount}</div>
                     </div>
                 </div>
                 <div className="warning">请您在还款时备注"合同后三位"以及"全额提前归还借款"或"归还当期欠款"</div>

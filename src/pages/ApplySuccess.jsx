@@ -6,6 +6,9 @@ class ApplySuccess extends Base {
 
     componentDidMount() {
         this.setTitle('收到申请');
+        setTimeout(() => {
+            this.props.history.push('/seeagreements');
+        }, 3000)
     }
 
     render() {
